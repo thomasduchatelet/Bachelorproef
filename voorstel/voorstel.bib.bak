@@ -136,11 +136,4 @@
   url    = {https://blog.nrwl.io/metaprogramming-higher-order-components-and-mixins-with-angular-ivy-75748fcbc310},
 }
 
-@Online{Exbrayat2019,
-  author = {Cédric Exbrayat},
-  date   = {2019-05-07},
-  title  = {What is Angular Ivy?},
-  url    = {https://blog.ninja-squad.com/2019/05/07/what-is-angular-ivy/},
-}
-
 @Comment{jabref-meta: databaseType:biblatex;}
