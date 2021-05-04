@@ -97,7 +97,17 @@ Every Angular application has a root module which takes care of the application 
 \end{figure}
 
 \subsubsection{State management}
-Additionally Angular contains a useful library called NgRx that functions as a state and data management tool. In Angular each component has one state and no idea of other component's states. NgRx allows to share this state by keeping it in a single store. This principle is also called the single source of truth.
+Additionally Angular contains a useful library called NgRx that functions as a state and data management tool. NgRx stands for 'Angular reactive extensions' and provides a state management solution based on redux for the Angular ecosystem. In Angular each component has one state and no idea of other component's states. NgRx allows to share this state by keeping it in a single store. This principle is also called the single source of truth. When no state management is implemented, the data is fetched from the back-end server each time a user navigates to the component where the data is shown. When the user modifies the data by performing a CRUD (Create, Read, Update, Delete) operation, the front-end makes a HTTP call to the server to save the modified data and then makes another call to recieve the latest state of the data. The data is stored in the component and lives along with the lifecycle of the component. When the component is destroyed by navigating to another component, it's data is cleared and should be fetched again from the server the next time the component is initialized. NgRx allows to reduce the number of unnecessary requests to the server by creating an in-memory database which contains data that is independent of the lifecycle of any component. This way the data that is fetched, survives during navigations in the application. This may improve the user experience because less loading indicators have to be displayed when data is already loaded. Instead, the modifications a user made are immediately reflected on the screen and saved to the server in the background. As developers don't want to write specific logic for all edge cases, NgRx contains a set of tools that can speed up development. There are five key concepts NgRx is based upon:
+\begin{enumerate}
+	\item Store
+	\item Actions
+	\item Reducers
+	\item Selectors
+	\item Effects
+\end{enumerate}
+
+A \emph{store} is a controlled state container mainly for managing global state across an entire application. It contains an observable of state and an observer of actions. \emph{Actions} describe unique events that are dispatched from components and services. Eg: When a user creates a new instance of an entity, a create action is called to add the object to the store. \emph{Reducers} are pure functions that take the current state and latest action as input and provide a new state as output. \emph{Selectors} are pure functions used to select slices of store state. Because the selectors are pure functions, the last result can be returned when arguments match so the functions doesn't have the need to be reinvoked. This practice is known as memoization and can provide performance benefits. \emph{effects} provide a way to interact with services and isolate those services from the components. In the effects, tasks such as fetching data and other external interations are handled. Effects perform tasks and return a new action. This way side effects are isolated from components, allowing for more pure components.
+
 \autocite{AltexSoft}
 \begin{figure}[h!]
     \caption{NgRx mechanism}
@@ -185,7 +195,40 @@ The release of Ivy opens up a lot of new potential features. Most of these featu
 \autocite{Exbrayat2019}
 
 
-\section{RxJs}
+\section{Zone.js}
+A zone is an execution context that persists across async tasks. Zone.js provides an execution context, lifecycle hooks and a generic error handler for async operations. An execution context is an abstract concept that holds information about the environment where the current code is executed. When a function is excecuted in the JavaScript engine, there will be a new execution context which will determine the scope of variables and functions that can be accessed. Further it will determine the value of the keyword ‘this’. In the JavaScript engine, the value of 'this' depends on the function or class where it is called.
+
+One of the key concepts of zone.js is to provide an additional execution context, another ‘this’, further referred to as 'zoneThis'. The zone context does not replace the basic JavaScript context, but adds a simplified way to handle asynchronous code. When running inside the JavaScript engine, the context changes depending on how and where the function is executed. In zone.js the ‘zoneThis’ will preserve the execution context across asynchronous operations. The ‘zoneThis’ thus will not change as long as it is running within the same zone. For a synchronous operation, ‘zoneThis’ will be the zone it is running in. For an asynchronous operation, ‘zoneThis’ will be the zone where the operation is scheduled. ‘ZoneThis’ does noy really exists, the correct syntax to get the current execution context in Zone.js is Zone.current.
+Zone.js also provides interceptable lifecycle hooks:
+\begin{itemize}
+	\item onFork
+	\item onIntercept
+	\item onInvoke
+	\item onHandleError
+	\item onScheduleTask
+	\item onInvokeTask
+	\item onCancelTask
+	\item onHasTask
+\end{itemize}
+
+In the following code example the usage of onInvokeTask is demonstrated:
+\begin{lstlisting}[language=Javascript]
+	ZoneA = {
+		onInvokeTask: (callback) => {
+			performance.start();
+			callback();
+			performance.end();
+		}	
+	};
+	ZoneA.run(() => {
+		performance.start();
+		a();
+		setTimeout(c);
+		setTimeout(d);
+		b();
+		performance.end();
+	});
+\end{lstlisting}
 
 \section{Typescript Decorators}
 
