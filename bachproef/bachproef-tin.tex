@@ -13,17 +13,18 @@
 \definecolor{lightgray}{rgb}{.9,.9,.9}
 \definecolor{darkgray}{rgb}{.4,.4,.4}
 \definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+\definecolor{green}{rgb}{0,.9,0}
 \lstdefinelanguage{JavaScript}{
 	keywords={break, case, catch, continue, debugger, default, delete, do, else, false, finally, for, function, if, in, instanceof, new, null, return, switch, this, throw, true, try, typeof, var, void, while, with},
 	morecomment=[l]{//},
 	morecomment=[s]{/*}{*/},
 	morestring=[b]',
 	morestring=[b]",
-	ndkeywords={class, export, boolean, throw, implements, import, this},
+	ndkeywords={class, export, boolean, throw, implements, import, @Component},
 	keywordstyle=\color{blue}\bfseries,
-	ndkeywordstyle=\color{darkgray}\bfseries,
+	ndkeywordstyle=\color{purple}\bfseries,
 	identifierstyle=\color{black},
-	commentstyle=\color{purple}\ttfamily,
+	commentstyle=\color{green}\ttfamily,
 	stringstyle=\color{red}\ttfamily,
 	sensitive=true
 }
@@ -43,6 +44,9 @@
 	showtabs=false,
 	captionpos=b
 }
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.multipart}
 
 %%---------- Documenteigenschappen ---------------------------------------------
 % TODO: Vul dit aan met je eigen info:
