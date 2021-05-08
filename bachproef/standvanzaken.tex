@@ -330,6 +330,36 @@ Using the zone onInvokeTask method will result in following call stack:
 Now the asynchronous methods or tasks get their own performance test.
 With onInvokeTask the asynchronous methods can be intercepted and additional instructions can be added to fit the call in an environment (like triggering change detection after an asynchronous api call in Angular).
 
+\subsection{Propagation}
+With the fork method a new zone can be propagated from the current to create a composition of independent zones. This can be used to isolate the logic and create seperate zones with a single responsability. Think of a zone for logging, a zone for error handling, a zone for change detection.
+
+\begin{lstlisting}[language=Javascript]
+	// Declare a zone which is forked from the zoneThis
+	const stackTraceZone = Zone.current.fork({
+		name: 'stackTraceZone',
+		onScheduleTask: ...
+		onInvokeTask: ...
+	});
+
+	// Declare another zone which is forked from the stackTraceZone
+	const logZone = stackTraceZone.fork({
+		name: 'logZone',
+		onInvokeTask: ...
+	});
+	
+	// Run the logzone, the setTimeout will bubble up to the 
+	// stackTraceZone and
+	// current zone
+	logZone.run(() => {
+		setTimeout(...);
+	});
+\end{lstlisting}
+
+In above example the setTimeout of the logZone will invoke the hooks on all three zones. Forking zones creates a composition and not inheritance, the logZone can exists without the stackTraceZone or be forked from another zone.
+
+\subsection{ngZone}
+The ngZone is a service that creates a zone named angular to automatically trigger change detection. It also provides a run method and an runOutsideAngular method. The run method can be used to execute a set of code inside the angular zone.
+
 \subsection{Useful cases for Zone.js}
 Zone.js can help developers in many areas: 
 \begin{itemize}
@@ -341,6 +371,7 @@ Zone.js can help developers in many areas:
 	\item User action tracing
 	\item Resource releasing
 \end{itemize}
+
 
 This thesis will focus on the framework autorendering use case.
 
