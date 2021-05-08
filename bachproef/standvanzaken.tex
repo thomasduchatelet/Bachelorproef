@@ -88,12 +88,12 @@ An example of one-way databinding from component to view in Angular is the usage
 	import { Component } from "@angular/core";
 	@Component({
 		selector: 'app-one-way-example',
-		template: '
+		template: `
 		<div>
 			<h1>{{title}}</h1>
 			<p>{{text}}</p>
 		</div>
-		'
+		`
 	})
 	
 	export class AppComponent {
@@ -107,11 +107,11 @@ To bind a property in Angular, square brackets are used to evaluate the right-ha
 	import { Component } from "@angular/core";
 	@Component({
 		selector: 'app-property-example',
-		template: '
+		template: `
 		<div>
 			<a [href]="appUrl"></i>
 		</div>
-		'
+		`
 	})
 	
 	export class AppComponent {
@@ -124,12 +124,12 @@ The event binding syntax consists of an event name within parentheses with a tem
 	import { Component } from "@angular/core";
 	@Component({
 		selector: 'app-event-example',
-		template: '
+		template: `
 		<div>
 			<button (click)="sayHello()">Say hello!</button>
 			<p>{{text}}</p>
 		</div>
-		'
+		`
 	})
 	
 	export class AppComponent {
@@ -148,13 +148,13 @@ Two-way databinding combines property binding with event binding with a combinat
 	import { Component } from "@angular/core";
 	@Component({
 		selector: 'app-two-way-example',
-		template: '
+		template: `
 		<div>
 			<input [(ngModel)]="name"></input>
 			<button (click)="changeNameToJohn()">Name me John</button>
 			<p>{{name}}</p>
 		</div>
-		'
+		`
 	})
 	
 	export class AppComponent {
@@ -200,6 +200,25 @@ One more advantage over AngularJs is that dependency injection became hierarchic
 Many beginners will define Angular as a complex framework to start with. The framework contains lots of features and possibilities. This causes a steep learning curve. The Angular team provides continuous support and new features regularly which is welcomed by experienced developers on the one hand but makes the learning process more difficult for beginners on the other hand.
 \autocite{AltexSoft}
 
+\section{Angular Ivy}
+According to \textcite{Angular.io-ivy} is Ivy the code name for Angular's next-generation compilation and rendering pipeline. With the version 9 release of Angular, the new compiler and runtime instructions are used by default instead of the older compiler and runtime, known as View Engine.
+
+\subsection{Compiler}
+The Angular framework is a compiler. A component is written in Typescript and it's template is written in HTML with some additional Angular syntax (directives). When building, Angular compiles this code to a set of Javascript instructions who are able to create and modify the DOM when a component is rendered on the page. If Angular was a car, the compiler would be the engine.
+
+\subsection{Most important features}
+The release of Ivy opens up a lot of new potential features. Most of these features are still experimental as the Angular does not want to introduce breaking changes with the new update. Experimental methods are marked with the Greek letter \(\Theta\) (Theta) so developers know this could cause issues when updating. The most important features of Angular Ivy are:
+\begin{itemize}
+    \item Better build times by ahead-of-time (AOT) compilation
+    \item Smaller bundle size by improved tree-shaking
+    \item Metaprogramming by using higher order components \autocite{Savkin2018}
+    \item Lazy loading of components by using stand-alone components
+    \item New change detection system without Zone.js
+    \item Ease the publishing process of libraries to NPM
+\end{itemize}
+
+\autocite{Exbrayat2019}
+
 \section {Reactive extensions}
 \subsection{NgRx}
 Additionally Angular contains a useful library called NgRx that functions as a state and data management tool. NgRx stands for 'Angular reactive extensions' and provides a state management solution inspired on redux for the Angular ecosystem. In Angular each component has one state and no idea of other component's states. NgRx allows to share this state by keeping it in a single store. This principle is also called the single source of truth. When no state management is implemented, the data is fetched from the back-end server each time a user navigates to the component where the data is shown. When the user modifies the data by performing a CRUD (Create, Read, Update, Delete) operation, the front-end makes a HTTP call to the server to save the modified data and then makes another call to recieve the latest state of the data. The data is stored in the component and lives along with the lifecycle of the component. When the component is destroyed by navigating to another component, it's data is cleared and should be fetched again from the server the next time the component is initialized. NgRx allows to reduce the number of unnecessary requests to the server by creating an in-memory database which contains data that is independent to the lifecycle of any component. This way the data that is fetched, survives during navigations in the application. This may improve the user experience because less loading indicators have to be displayed when data is already loaded. Instead, the modifications a user made are immediately reflected on the screen and saved to the server in the background. As developers don't want to write specific logic for all edge cases, NgRx contains a set of tools that can speed up development. There are five key concepts NgRx is based upon:
@@ -222,31 +241,11 @@ A \emph{store} is a controlled state container mainly for managing global state 
 
 \subsection{RxJs}
 
-\section{Angular Ivy}
-\subsection{Definition}
-According to \textcite{Angular.io-ivy} is Ivy the code name for Angular's next-generation compilation and rendering pipeline. With the version 9 release of Angular, the new compiler and runtime instructions are used by default instead of the older compiler and runtime, known as View Engine.
-
-\subsection{Compiler}
-The Angular framework is a compiler. A component is written in Typescript and it's template is written in HTML with some additional Angular syntax (directives). When building, Angular compiles this code to a set of Javascript instructions who are able to create and modify the DOM when a component is rendered on the page. If Angular was a car, the compiler would be the engine.
-
-\subsection{Most important features}
-The release of Ivy opens up a lot of new potential features. Most of these features are still experimental as the Angular does not want to introduce breaking changes with the new update. Experimental methods are marked with the Greek letter \(\Theta\) (Theta) so developers know this could cause issues when updating. The most important features of Angular Ivy are:
-\begin{itemize}
-	\item Better build times by ahead-of-time (AOT) compilation
-	\item Smaller bundle size by improved tree-shaking
-	\item Metaprogramming by using higher order components \autocite{Savkin2018}
-	\item Lazy loading of components by using stand-alone components
-	\item New change detection system without Zone.js
-	\item Ease the publishing process of libraries to NPM
-\end{itemize}
-
-\autocite{Exbrayat2019}
-
 
 \section{Zone.js}
 A zone is an execution context that persists across async tasks. Zone.js provides an execution context, lifecycle hooks and a generic error handler for async operations. An execution context is an abstract concept that holds information about the environment where the current code is executed. When a function is excecuted in the JavaScript engine, there will be a new execution context which will determine the scope of variables and functions that can be accessed. Further it will determine the value of the keyword ‘this’. In the JavaScript engine, the value of 'this' depends on the function or class where it is called.
 
-One of the key concepts of zone.js is to provide an additional execution context, another ‘this’, further referred to as 'zoneThis'. The zone context does not replace the basic JavaScript context, but adds a simplified way to handle asynchronous code. When running inside the JavaScript engine, the context changes depending on how and where the function is executed. In zone.js the ‘zoneThis’ will preserve the execution context across asynchronous operations. The ‘zoneThis’ thus will not change as long as it is running within the same zone. For a synchronous operation, ‘zoneThis’ will be the zone it is running in. For an asynchronous operation, ‘zoneThis’ will be the zone where the operation is scheduled. ‘ZoneThis’ does noy really exists, the correct syntax to get the current execution context in Zone.js is Zone.current.
+One of the key concepts of zone.js is to provide an additional execution context, another ‘this’, further referred to as 'zoneThis'. The zone context does not replace the basic JavaScript context, but adds a simplified way to handle asynchronous code. When running inside the JavaScript engine, the context changes depending on how and where the function is executed. In zone.js the ‘zoneThis’ will preserve the execution context across asynchronous operations. The ‘zoneThis’ thus will not change as long as it is running within the same zone. For a synchronous operation, ‘zoneThis’ will be the zone it is running in. For an asynchronous operation, ‘zoneThis’ will be the zone where the operation is scheduled. ‘ZoneThis’ does not really exists, the correct syntax to get the current execution context in Zone.js is Zone.current.
 Zone.js also provides interceptable lifecycle hooks:
 \begin{itemize}
 	\item onFork
@@ -286,7 +285,7 @@ If the code in above example is executed in the JavaScript engine, the call stac
 	};
 \end{tikzpicture}
 
-This is because the setTimeout functions as an asyc method that places the callback at the end of the stack. This causes the performance test to only measure the performance of a and b. If we also want to measure the performance of c and d, Zone.js can come to help. In the following example, the onInvokeTask hook is used to start a test before the callback (c or d) of an async method is executed and end the test after.
+This is because the setTimeout functions as an async method that places the callback at the end of the stack. This causes the performance test to only measure the performance of a and b. If we also want to measure the performance of c and d, Zone.js can come to help. In the following example, the onInvokeTask hook is used to start a test before the callback (c or d) of an async method is executed and end the test after.
 
 \begin{lstlisting}[language=Javascript]
 	// Declare a zone and declare the onInvokeTask hook
@@ -358,7 +357,57 @@ With the fork method a new zone can be propagated from the current to create a c
 In above example the setTimeout of the logZone will invoke the hooks on all three zones. Forking zones creates a composition and not inheritance, the logZone can exists without the stackTraceZone or be forked from another zone.
 
 \subsection{ngZone}
-The ngZone is a service that creates a zone named angular to automatically trigger change detection. It also provides a run method and an runOutsideAngular method. The run method can be used to execute a set of code inside the angular zone.
+The ngZone is a service that creates a zone named angular to automatically trigger change detection. It also provides a run method and an runOutsideAngular method. The run method can be used to execute a set of code inside the angular zone. With the runOutsideAngular method, a set of code can be executed outside the ngZone and thus not trigger change detection after asynchronous methods. In the ngZone source code, the onInvokeTask and invokeTask hook are declared to trigger the change detection after a callback is executed.
+
+\begin{lstlisting}[language=Javascript]
+    ...
+    function forkInnerZoneWithAngularBehavior(zone: NgZonePrivate) {
+        const delayChangeDetectionForEventsDelegate = () => {
+            delayChangeDetectionForEvents(zone);
+        };
+        // Propagate angular zone
+        zone._inner = zone._inner.fork({
+            name: 'angular',
+            properties: <any>{'isAngularZone': true},
+            
+            // Declare onInvokeTask hook 
+            // (will apply to all async operations)
+            onInvokeTask:
+            (delegate: ZoneDelegate, current: Zone, target: Zone, task: Task, applyThis: any,
+            applyArgs: any): any => {
+                try {
+                    onEnter(zone);
+                    // Execute callback
+                    return delegate.invokeTask(target, task, applyThis, applyArgs);
+                } finally {
+                    if ((zone.shouldCoalesceEventChangeDetection && task.type === 'eventTask') ||
+                    zone.shouldCoalesceRunChangeDetection) {
+                        // Trigger change detection
+                        delayChangeDetectionForEventsDelegate();
+                    }
+                    onLeave(zone);
+                }
+            },
+            
+            // Declare onInvoke hook 
+            // (will apply to all sync and async operations)
+            onInvoke:
+            (delegate: ZoneDelegate, current: Zone, target: Zone, callback: Function, applyThis: any,
+            applyArgs?: any[], source?: string): any => {
+                try {
+                    onEnter(zone);
+                    // Execute callback
+                    return delegate.invoke(target, callback, applyThis, applyArgs, source);
+                } finally {
+                    if (zone.shouldCoalesceRunChangeDetection) {
+                        // Trigger change detection
+                        delayChangeDetectionForEventsDelegate();
+                    }
+                    onLeave(zone);
+                }
+            },
+        ...
+\end{lstlisting}
 
 \subsection{Useful cases for Zone.js}
 Zone.js can help developers in many areas: 
@@ -406,6 +455,19 @@ With the \emph{OnPush} strategy it is possible to skip components when checking 
     \includegraphics[width=.49\textwidth]{img/onpush-cycle4.png} 
 \end{figure}
 
+The change detection strategy can be defined by declaring the changeDetection property in a components settings.
+\begin{lstlisting}[language=JavaScript]
+    @Component({
+        selector: 'app-onpush-example',
+        // Define OnPush strategy
+        changeDetection: ChangeDetectionStrategy.OnPush,
+        template: `...`
+    })
+    export class AppComponent  {
+        ....      
+    }
+\end{lstlisting}
+
 Thanks to the custom strategy implemented by the developer, Angular will not update the components where \emph{OnPush} is defined unless:
 \begin{itemize}
     \item The reference of an \emph{@Input} property changes.
@@ -413,11 +475,32 @@ Thanks to the custom strategy implemented by the developer, Angular will not upd
     \item An observable that uses the \emph{async} pipe in the template provides a new value.
     \item The change detection is triggered by the developer.
 \end{itemize}
+
+When setting the change detection strategy to onPush a developer is obliged to work with immutable objects. By using immutability Angular can perform a simple reference check instead of a deep comparison check to know if the view should re-render. This means that change detection won't run when an objects property is mutated. In order to trigger change detection, the object should be re-assigned so the reference changes. ANother trigger for onPush change detection is when an event is triggered in the component or one of its children. Notice that this only applies to DOM events. One more situation that would trigger onPush change detection is when an observable that is used in the template with an async pipe emits a new value. The async pipe handles the subscribe and unsubscribe to an observable and provides the latest value it has emitted. When none of the above conditions pass but the developer wants the change detection mechanism to run, there is a final way to trigger change detection. By injecting a changeDetectorRef in the constructor of a component, the developer can call change detection manually in several ways. This is demonstrated in below example.
+\begin{lstlisting}[language=JavaScript]
+    @Component({
+        selector: 'app-onpush-manual-example',
+        // Define OnPush strategy
+        changeDetection: ChangeDetectionStrategy.OnPush,
+        template: `<span>Hey {{name}}!</span>`
+    })
+    export class AppComponent  {
+        name: string = 'Jane';
+        
+        constructor(private _changeDetectorReference: ChangeDetectorRef){
+            setTimeout(() => {
+                this.name = 'John';
+                // Trigger change detection
+                this._changeDetectorReference.detectChanges();
+            }, 1000);
+        }      
+    }
+\end{lstlisting}
+
+When this component is initialized, the view will display 'Hey Jane!' and change to 'Hey John!' after 1 second. Another method to manualy call change detection is ApplicationRef.tick(). This tells Angular to run change detection for the whole application. Finally, markForCheck could also be used to not trigger change detection, but mark all onPush ancestors to be checked in the next change detection cycle.
+
 \subsection{Zoneless}
 
 
-
-
-\section{Typescript Decorators}
-
 \section{SignalR}
+SignalR is a library for ASP.NET that provides the ability of adding real-time web functionality to applications. With SignalR the server can push content to connected clients instead of waiting for the client to request new data. This allows to create applications which can get new data from the server without refreshing the page. SignalR opens a connection between the client and the server and acts as an observable where one or more clients can listen to. By providing a consistent interface across version of WebSocket, SignalR shields the developer from having to worry about updates to WebSocket. SignalR always tries to establish a WebSocket connection if possible. If the client browser does not support it, other transports will be used as fallback.
