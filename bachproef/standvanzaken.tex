@@ -84,6 +84,7 @@ In response to the one-way databinding React used, Angular lets the developer de
 \autocite{AltexSoft}
 
 An example of one-way databinding from component to view in Angular is the usage of a component's property enclosed by two curly braces.
+\autocite{Goudar2019}
 \begin{lstlisting}[language=Javascript]
 	import { Component } from "@angular/core";
 	@Component({
@@ -103,6 +104,7 @@ An example of one-way databinding from component to view in Angular is the usage
 \end{lstlisting}
 
 To bind a property in Angular, square brackets are used to evaluate the right-hand side of the assignment as a dynamic expression. Without brackets, the right-hand side would be treated as a string literal. In below example the appUrl property of the component is bound to the href property of the anchor element in the view.
+\autocite{AngularProperty}
 \begin{lstlisting}[language=Javascript]
 	import { Component } from "@angular/core";
 	@Component({
@@ -120,6 +122,7 @@ To bind a property in Angular, square brackets are used to evaluate the right-ha
 \end{lstlisting}
 
 The event binding syntax consists of an event name within parentheses with a template statement. In below example the click event of the button int he view is bound to the sayHello statement in the component. Notice the one-way databinding used to show the modified text in the paragraph.
+\autocite{AngularEvent}
 \begin{lstlisting}[language=Javascript]
 	import { Component } from "@angular/core";
 	@Component({
@@ -143,7 +146,7 @@ The event binding syntax consists of an event name within parentheses with a tem
 
 
 Two-way databinding combines property binding with event binding with a combination of square brackets and parentheses as syntax. Further, input and output properties are used to pass data between the component and the view and vice-versa. In below example the input property in the component is bound to the name property in the component. When the user enters a new name, the name property in the component is changed. When the component changes the property itself, the changes are also reflected to the view.
-
+\autocite{Goudar2019}
 \begin{lstlisting}[language=Javascript]
 	import { Component } from "@angular/core";
 	@Component({
@@ -184,7 +187,7 @@ Moreover Angular uses Zone.Js to provide automatic change detection. When a mode
 \autocite{Kumar2020}
 
 \subsubsection{Typescript}
-Another important change was that Angular now used Typescript instead of Javascript. Typescript provides static typing which makes it easier for developers to find mistakes before production and use Intellisense to speed up the development process. Typescript is also easy to read for developers with knowledge of Javascript and supports Javascript libraries. In fact, it assembles back to Javascript when compiling.
+Another important change was that Angular now used Typescript instead of Javascript. Typescript provides static typing which makes it easier for developers to find mistakes before production and use Intellisense to speed up the development process. Typescript is also easy to read for developers with knowledge of Javascript and supports Javascript libraries. In fact, it transpiles back to Javascript.
 \autocite{Typescriptlang}
 
 \subsubsection{Hierarchical dependency injection}
@@ -221,7 +224,10 @@ The release of Ivy opens up a lot of new potential features. Most of these featu
 
 \section {Reactive extensions}
 \subsection{NgRx}
-Additionally Angular contains a useful library called NgRx that functions as a state and data management tool. NgRx stands for 'Angular reactive extensions' and provides a state management solution inspired on redux for the Angular ecosystem. In Angular each component has one state and no idea of other component's states. NgRx allows to share this state by keeping it in a single store. This principle is also called the single source of truth. When no state management is implemented, the data is fetched from the back-end server each time a user navigates to the component where the data is shown. When the user modifies the data by performing a CRUD (Create, Read, Update, Delete) operation, the front-end makes a HTTP call to the server to save the modified data and then makes another call to recieve the latest state of the data. The data is stored in the component and lives along with the lifecycle of the component. When the component is destroyed by navigating to another component, it's data is cleared and should be fetched again from the server the next time the component is initialized. NgRx allows to reduce the number of unnecessary requests to the server by creating an in-memory database which contains data that is independent to the lifecycle of any component. This way the data that is fetched, survives during navigations in the application. This may improve the user experience because less loading indicators have to be displayed when data is already loaded. Instead, the modifications a user made are immediately reflected on the screen and saved to the server in the background. As developers don't want to write specific logic for all edge cases, NgRx contains a set of tools that can speed up development. There are five key concepts NgRx is based upon:
+Additionally Angular contains a useful library called NgRx that functions as a state and data management tool. NgRx stands for 'Angular reactive extensions' and provides a state management solution inspired on redux for the Angular ecosystem. \autocite{AngularUni2020} In Angular each component has one state and no idea of other component's states. NgRx allows to share this state by keeping it in a single store. This principle is also called the single source of truth.
+\autocite{AltexSoft}
+When no state management is implemented, the data is fetched from the back-end server each time a user navigates to the component where the data is shown. When the user modifies the data by performing a CRUD (Create, Read, Update, Delete) operation, the front-end makes a HTTP call to the server to save the modified data and then makes another call to recieve the latest state of the data. The data is stored in the component and lives along with the lifecycle of the component. When the component is destroyed by navigating to another component, it's data is cleared and should be fetched again from the server the next time the component is initialized. NgRx allows to reduce the number of unnecessary requests to the server by creating an in-memory database which contains data that is independent to the lifecycle of any component. This way the data that is fetched, survives during navigations in the application. This may improve the user experience because less loading indicators have to be displayed when data is already loaded. Instead, the modifications a user made are immediately reflected on the screen and saved to the server in the background. \autocite{Simon2018}
+As developers don't want to write specific logic for all edge cases, NgRx contains a set of tools that can speed up development. There are five key concepts NgRx is based upon:
 \begin{enumerate}
 	\item Store
 	\item Actions
@@ -229,10 +235,17 @@ Additionally Angular contains a useful library called NgRx that functions as a s
 	\item Selectors
 	\item Effects
 \end{enumerate}
+\autocite{NgRxStore}
 
-A \emph{store} is a controlled state container mainly for managing global state across an entire application. It contains an observable of state and an observer of actions. \emph{Actions} describe unique events that are dispatched from components and services. Eg: When a user creates a new instance of an entity, a create action is called to add the object to the store. \emph{Reducers} are pure functions that take the current state and latest action as input and provide a new state as output. \emph{Selectors} are pure functions used to select slices of store state. Because the selectors are pure functions, the last result can be returned when arguments match so the functions doesn't have the need to be reinvoked. This practice is known as memoization and can provide performance benefits. \emph{effects} provide a way to interact with services and isolate those services from the components. In the effects, tasks such as fetching data and other external interations are handled. Effects perform tasks and return a new action. This way side effects are isolated from components, allowing for more pure components.
+A store is a controlled state container mainly for managing global state across an entire application. It contains an observable of state and an observer of actions. \autocite{NgRxStore}
+Actions describe unique events that are dispatched from components and services. Eg: When a user creates a new instance of an entity, a create action is called to add the object to the store.
+\autocite{NgRxActions}
+Reducers are pure functions that take the current state and latest action as input and provide a new state as output. Selectors are pure functions used to select slices of store state. Because the selectors are pure functions, the last result can be returned when arguments match so the functions doesn't have the need to be reinvoked. This practice is known as memoization and can provide performance benefits. \autocite{NgRxSelectors}
 
-\autocite{AltexSoft}
+Effects provide a way to interact with services and isolate those services from the components. In the effects, tasks such as fetching data and other external interations are handled. Effects perform tasks and return a new action. This way side effects are isolated from components, allowing for more pure components.
+\autocite{NgRxEffects}
+
+
 \begin{figure}[h!]
 	\caption{NgRx mechanism}
 	\centering
@@ -240,10 +253,24 @@ A \emph{store} is a controlled state container mainly for managing global state 
 \end{figure}
 
 \subsection{RxJs}
+According to \textcite{AngularRxjs} RxJs is a library for reactive programming using observables that makes it easier to compose asynchronous or callback-based code. The library provides utility functions for creating and working with observables. With RxJs observables are handled as streams where a developers can use operators to enable a functional programming style of dealing with collections. \autocite{RxJsDocs}
 
+These operators are pure functions that enable sophisticated manipulation of collections. They return a pure function that takes a source observable, transforms the values and returns a new observable of those transformed values. One of the most interesting functions is the pipe function which allows to combine multiple operator into a single function. The most important operators are:
+
+\begin{itemize}
+	\item Creation: from, fromEvent, of
+	\item Combination: combineLatest, concat, merge, startWith, withLatestFrom, zip
+	\item Filtering: debounceTime, distinctUntilChanged, filter, take, takeUntil
+	\item Transformation: bufferTime, concatMap, map, mergeMap, scan, switchMap
+	\item Utility: tap
+	\item Multicasting: share
+\end{itemize}
+
+\autocite{AngularRxjs}
 
 \section{Zone.js}
 A zone is an execution context that persists across async tasks. Zone.js provides an execution context, lifecycle hooks and a generic error handler for async operations. An execution context is an abstract concept that holds information about the environment where the current code is executed. When a function is excecuted in the JavaScript engine, there will be a new execution context which will determine the scope of variables and functions that can be accessed. Further it will determine the value of the keyword ‘this’. In the JavaScript engine, the value of 'this' depends on the function or class where it is called.
+\autocite{ngHouston2019}
 
 One of the key concepts of zone.js is to provide an additional execution context, another ‘this’, further referred to as 'zoneThis'. The zone context does not replace the basic JavaScript context, but adds a simplified way to handle asynchronous code. When running inside the JavaScript engine, the context changes depending on how and where the function is executed. In zone.js the ‘zoneThis’ will preserve the execution context across asynchronous operations. The ‘zoneThis’ thus will not change as long as it is running within the same zone. For a synchronous operation, ‘zoneThis’ will be the zone it is running in. For an asynchronous operation, ‘zoneThis’ will be the zone where the operation is scheduled. ‘ZoneThis’ does not really exists, the correct syntax to get the current execution context in Zone.js is Zone.current.
 Zone.js also provides interceptable lifecycle hooks:
@@ -270,7 +297,7 @@ Below code-examples will demonstrate the use of zone lifecycle hooks.
 	b();
 	performance.end();
 \end{lstlisting}
-
+\autocite{ngHouston2019}
 
 If the code in above example is executed in the JavaScript engine, the call stack would look as following: 
 
@@ -308,7 +335,7 @@ This is because the setTimeout functions as an async method that places the call
 		performance.end();
 	});
 \end{lstlisting}
-
+\autocite{ngHouston2019}
 Using the zone onInvokeTask method will result in following call stack:
 
 \begin{tikzpicture}[stack/.style={rectangle split, rectangle split parts=#1,draw, anchor=center}]
@@ -328,10 +355,11 @@ Using the zone onInvokeTask method will result in following call stack:
 
 Now the asynchronous methods or tasks get their own performance test.
 With onInvokeTask the asynchronous methods can be intercepted and additional instructions can be added to fit the call in an environment (like triggering change detection after an asynchronous api call in Angular).
+\autocite{ngHouston2019}
 
 \subsection{Propagation}
 With the fork method a new zone can be propagated from the current to create a composition of independent zones. This can be used to isolate the logic and create seperate zones with a single responsability. Think of a zone for logging, a zone for error handling, a zone for change detection.
-
+\autocite{AngularAir2019}
 \begin{lstlisting}[language=Javascript]
 	// Declare a zone which is forked from the zoneThis
 	const stackTraceZone = Zone.current.fork({
@@ -353,11 +381,14 @@ With the fork method a new zone can be propagated from the current to create a c
 		setTimeout(...);
 	});
 \end{lstlisting}
-
+\autocite{AngularAir2019}
 In above example the setTimeout of the logZone will invoke the hooks on all three zones. Forking zones creates a composition and not inheritance, the logZone can exists without the stackTraceZone or be forked from another zone.
 
 \subsection{ngZone}
-The ngZone is a service that creates a zone named angular to automatically trigger change detection. It also provides a run method and an runOutsideAngular method. The run method can be used to execute a set of code inside the angular zone. With the runOutsideAngular method, a set of code can be executed outside the ngZone and thus not trigger change detection after asynchronous methods. In the ngZone source code, the onInvokeTask and invokeTask hook are declared to trigger the change detection after a callback is executed.
+The ngZone is a service that creates a zone named angular to automatically trigger change detection. It also provides a run method and an runOutsideAngular method. The run method can be used to execute a set of code inside the angular zone. With the runOutsideAngular method, a set of code can be executed outside the ngZone and thus not trigger change detection after asynchronous methods.
+\autocite{Sargsyan2020}
+
+In the ngZone source code, the onInvokeTask and invokeTask hook are declared to trigger the change detection after a callback is executed.
 
 \begin{lstlisting}[language=Javascript]
     ...
@@ -408,6 +439,7 @@ The ngZone is a service that creates a zone named angular to automatically trigg
             },
         ...
 \end{lstlisting}
+\autocite{ngZoneSrc}
 
 \subsection{Useful cases for Zone.js}
 Zone.js can help developers in many areas: 
@@ -420,7 +452,7 @@ Zone.js can help developers in many areas:
 	\item User action tracing
 	\item Resource releasing
 \end{itemize}
-
+\autocite{ngHouston2019}
 
 This thesis will focus on the framework autorendering use case.
 
@@ -476,7 +508,8 @@ Thanks to the custom strategy implemented by the developer, Angular will not upd
     \item The change detection is triggered by the developer.
 \end{itemize}
 
-When setting the change detection strategy to onPush a developer is obliged to work with immutable objects. By using immutability Angular can perform a simple reference check instead of a deep comparison check to know if the view should re-render. This means that change detection won't run when an objects property is mutated. In order to trigger change detection, the object should be re-assigned so the reference changes. ANother trigger for onPush change detection is when an event is triggered in the component or one of its children. Notice that this only applies to DOM events. One more situation that would trigger onPush change detection is when an observable that is used in the template with an async pipe emits a new value. The async pipe handles the subscribe and unsubscribe to an observable and provides the latest value it has emitted. When none of the above conditions pass but the developer wants the change detection mechanism to run, there is a final way to trigger change detection. By injecting a changeDetectorRef in the constructor of a component, the developer can call change detection manually in several ways. This is demonstrated in below example.
+When setting the change detection strategy to onPush a developer is obliged to work with immutable objects. By using immutability Angular can perform a simple reference check instead of a deep comparison check to know if the view should re-render. This means that change detection won't run when an objects property is mutated. In order to trigger change detection, the object should be re-assigned so the reference changes. ANother trigger for onPush change detection is when an event is triggered in the component or one of its children. Notice that this only applies to DOM events. \autocite{Basal2018} One more situation that would trigger onPush change detection is when an observable that is used in the template with an async pipe emits a new value. The async pipe handles the subscribe and unsubscribe to an observable and provides the latest value it has emitted. When none of the above conditions pass but the developer wants the change detection mechanism to run, there is a final way to trigger change detection. By injecting a changeDetectorRef in the constructor of a component, the developer can call change detection manually in several ways. This is demonstrated in below example.
+\autocite{AngularUniOnpush2020}
 \begin{lstlisting}[language=JavaScript]
     @Component({
         selector: 'app-onpush-manual-example',
@@ -500,7 +533,37 @@ When setting the change detection strategy to onPush a developer is obliged to w
 When this component is initialized, the view will display 'Hey Jane!' and change to 'Hey John!' after 1 second. Another method to manualy call change detection is ApplicationRef.tick(). This tells Angular to run change detection for the whole application. Finally, markForCheck could also be used to not trigger change detection, but mark all onPush ancestors to be checked in the next change detection cycle.
 
 \subsection{Zoneless}
+As stated before, Zone.js is a very powerful library that can help Angular developers in many ways. It takes enables to develop without having to worry about change detection at all since Zone.js takes care of it automatically. Nevertheless, the library can cause more re-rendering than needed. When performance is an issue, removing Zone.js can be an interesting move. With Angular Ivy it is now possible to bypass zone and trigger change detection completely manually. There are two new functions: \(\Theta\)detectChanges and \(\Theta\)markDirty. The \(\Theta\)markDirty function marks a component dirty and the component will be re-rendered next time the change detection is triggered. The \(\Theta\)markDirty function will also schedule a change detection run at some point in the future.
+\autocite{Buomprisco2019}
 
+\begin{lstlisting}[language=JavaScript]
+	@Component({...})
+	export class AppComponent {
+		setTitle(title: string) {
+			this.title = title;
+			markDirty(this);
+		}
+	}
+\end{lstlisting}
+\autocite{Buomprisco2019}
+
+Where the \(\Theta\)markDirty function is an asynchronous function that will schedule a change detection cycle, the \(\Theta\)detectChanges is a synchronous function that will cause change detection to run immediately and thus \(\Theta\)markDirty is recommended. The usage of \(\Theta\)detectChanges is demonstrated below:
+
+\begin{lstlisting}[language=JavaScript]
+	@Component({...})
+	export class AppComponent {
+		setTitle(title: string) {
+			this.title = title;
+			detectChanges(this);
+		}
+	}
+\end{lstlisting}
+\autocite{Buomprisco2019}
+
+Please notice that there is no need for injecting the changeDetectorRef anymore, since with Angular Ivy these two functions are part of the internal (private) Angular core API.
+
+\autocite{Buomprisco2019}
 
 \section{SignalR}
 SignalR is a library for ASP.NET that provides the ability of adding real-time web functionality to applications. With SignalR the server can push content to connected clients instead of waiting for the client to request new data. This allows to create applications which can get new data from the server without refreshing the page. SignalR opens a connection between the client and the server and acts as an observable where one or more clients can listen to. By providing a consistent interface across version of WebSocket, SignalR shields the developer from having to worry about updates to WebSocket. SignalR always tries to establish a WebSocket connection if possible. If the client browser does not support it, other transports will be used as fallback.
+\autocite{Microsoft2014}
