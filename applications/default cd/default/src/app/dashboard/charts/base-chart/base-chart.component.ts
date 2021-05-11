@@ -1,17 +1,31 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ChartOptions, ChartPluginsOptions } from 'chart.js';
+import { Label } from 'ng2-charts';
 import { ChartSetting } from '../../models/chart-setting';
 
 @Component({
   selector: 'app-base-chart',
-  templateUrl: './base-chart.component.html',
-  styleUrls: ['./base-chart.component.css']
+  template: ``
 })
-export class BaseChartComponent implements OnInit {
+export class BaseChartComponent {
   @Input() chartSettings: ChartSetting;
 
   constructor() { }
 
-  ngOnInit() {
+  get labels(): Label[]{
+    return this.chartSettings.properties.labels;
+  }
+
+  get options(): ChartOptions{
+    return this.chartSettings.properties.options;
+  }
+
+  get plugins(): ChartPluginsOptions[]{
+    return this.chartSettings.properties.plugins;
+  }
+
+  get legend():  boolean{
+    return this.chartSettings.properties.legend;
   }
 
 }

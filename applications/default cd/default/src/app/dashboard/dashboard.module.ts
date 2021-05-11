@@ -6,6 +6,7 @@ import { LineChartComponent } from './charts/line-chart/line-chart.component';
 import { ScatterChartComponent } from './charts/scatter-chart/scatter-chart.component';
 import { PieChartComponent } from './charts/pie-chart/pie-chart.component';
 import { BarChartComponent } from './charts/bar-chart/bar-chart.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 
@@ -21,6 +22,7 @@ import { BarChartComponent } from './charts/bar-chart/bar-chart.component';
   exports: [DashboardComponent],
   imports: [
     CommonModule,
+    ChartsModule
   ]
 })
 export class DashboardModule { }
