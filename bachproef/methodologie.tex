@@ -11,5 +11,229 @@
 %% mogelijke manier toegepast hebt om een antwoord te vinden op de
 %% onderzoeksvraag.
 
-\lipsum[21-25]
+\section{Introduction}
+To be able to measure the differences in performance, three applications will be developed. All applications will recieve SignalR updates from the server and draw twenty real-time charts in the browser and animate the updated data. The first application will let Zone.js and default Angular change detection handle everything. In the second application the changeDetectorRef will be injected and the onPush strategy will be used to achieve the same goal. In the third application, Zone.js will be excluded from the project and the Angular Ivy internal private API will be used to handle change detection fully manual. Afterwards the performance of all three applications can be measured and compared.
+
+\section{Default change detection application}
+First of all, a new application should be created. This can be done by running following command in the terminal.
+\begin{lstlisting}[language=bash]
+$ ng new default
+\end{lstlisting}
+
+Now the terminal should navigate to the app directory into the newly generated project folder.
+
+\begin{lstlisting}[language=bash]
+	$ cd default/src/app
+\end{lstlisting}
+
+In the app directory, a new module should be created to hold all components regarding the dashboard with the charts. This way lazy loading could be used when the application would be extended with additional functionality that doesn't require the charting library.
+
+\begin{lstlisting}[language=bash]
+	$ ng g m dashboard
+\end{lstlisting}
+
+This command creates a folder with a dashboard module. Now the terminal can navigate to this folder using:
+
+\begin{lstlisting}[language=bash]
+	$ cd dashboard
+\end{lstlisting}
+
+In the dashboard folder, a dashboard component can be generated which will hold all the charts.
+
+\begin{lstlisting}[language=bash]
+	$ ng g c dashboard
+\end{lstlisting}
+
+To keep an overview of all files, some additional folders are a good practice. Therefore two more folders shall be created to hold the models and services.
+
+\begin{lstlisting}[language=bash]
+	$ mkdir models
+	$ mkdir services
+\end{lstlisting}
+
+The dashboard component will need some configuration data to know how to draw the charts. This could be hardcoded but since it is likable to maintain flexibility in the application, the configuration will be stored in an object. To create the class for this object, the terminal should move to the models folder and generate the class. An additional enum will also be generated to hold the possible types of charts the application supports.
+
+\begin{lstlisting}[language=bash]
+	$ cd models
+	$ ng g class ChartSetting
+	$ ng g enum ChartType
+\end{lstlisting}
+
+Then the types of supported charts are defined in the enum.
+
+\begin{lstlisting}[language=JavaScript]
+	export enum ChartType {
+		Line = 0,
+		Bar = 1,
+		Scatter = 2,
+		Pie = 3
+	}
+\end{lstlisting}
+
+Now the chart settings model can be build. To start, this contains a title and a type but can be extended in the future when needed.
+
+\begin{lstlisting}[language=JavaScript]
+	import { ChartType } from "./chart-type.enum";
+	
+	export class ChartSetting {
+		title: string;
+		type: ChartType;
+	}
+\end{lstlisting}
+
+To fetch the chart configuration containing the data the dashoard component needs to draw the charts on the dashboard, a service is a good solution because it allows reuse of code.
+ 
+\begin{lstlisting}[language=bash]
+	$ cd ../services
+	$ ng g s chartSettings
+\end{lstlisting}
+
+This service could make an API call if the charts should be configurable, but for now a static area of twenty charts is returned. Notice the @Injectable statement above the class declaration. This enables to inject the service in the constructor of a component.
+
+\begin{lstlisting}[language=JavaScript]
+	import { Injectable } from '@angular/core';
+	import { ChartSetting } from '../models/chart-setting';
+	import { ChartType } from '../models/chart-type.enum';
+	
+	@Injectable({
+		providedIn: 'root'
+	})
+	export class ChartSettingsService {
+		
+		constructor() { }
+		
+		get chartSettings(): ChartSetting[]{
+			return [
+				{title: 'line1', type: ChartType.Line},
+				{title: 'line2', type: ChartType.Line},
+				{title: 'line3', type: ChartType.Line},
+				{title: 'line4', type: ChartType.Line},
+				{title: 'line5', type: ChartType.Line},
+				{title: 'Bar1', type: ChartType.Bar},
+				{title: 'Bar2', type: ChartType.Bar},
+				{title: 'Bar3', type: ChartType.Bar},
+				{title: 'Bar4', type: ChartType.Bar},
+				{title: 'Bar5', type: ChartType.Bar},
+				{title: 'Scatter1', type: ChartType.Scatter},
+				{title: 'Scatter2', type: ChartType.Scatter},
+				{title: 'Scatter3', type: ChartType.Scatter},
+				{title: 'Scatter4', type: ChartType.Scatter},
+				{title: 'Scatter5', type: ChartType.Scatter},
+				{title: 'Pie1', type: ChartType.Pie},
+				{title: 'Pie2', type: ChartType.Pie},
+				{title: 'Pie3', type: ChartType.Pie},
+				{title: 'Pie4', type: ChartType.Pie},
+				{title: 'Pie5', type: ChartType.Pie}
+			];
+		}
+	}
+\end{lstlisting}
+
+The next step is to create a component for each type of chart that holds the logic for drawing the chart. To stick to the DRY (Don't Repeat Yourself) pattern, an additional BaseChart component will be created that will hold the logic for listening to SignalR later on.
+
+\begin{lstlisting}[language=bash]
+	$ cd ..
+	$ mkdir charts
+	$ cd charts
+	$ ng g c baseChart
+	$ ng g c lineChart
+	$ ng g c barChart
+	$ ng g c scatterChart
+	$ ng g c pieChart
+\end{lstlisting}
+
+In the BaseChart component an Input property should be added so the dashboard can pass the configuration to its child component.
+
+\begin{lstlisting}[language=JavaScript]
+	export class BaseChartComponent implements OnInit {
+		@Input() chartSettings: ChartSetting;
+		...
+	}
+\end{lstlisting}
+
+The other chart components should inerit from the BaseChart component so they can access the chart settings as well.
+
+\begin{lstlisting}[language=JavaScript]
+	export class LineChartComponent extends BaseChartComponent implements OnInit {
+		constructor() {
+			super();
+		}
+		...
+	}
+
+	export class BarChartComponent extends BaseChartComponent implements OnInit {
+		constructor() {
+			super();
+		}
+		...
+	}
+	
+	export class ScatterChartComponent extends BaseChartComponent implements OnInit {
+		constructor() {
+			super();
+		}
+		...
+	}
+	
+	export class PieChartComponent extends BaseChartComponent implements OnInit {
+		constructor() {
+			super();
+		}
+		...
+	}
+\end{lstlisting}
+
+Now this is set up, the ChartSettings service has to be injected in the constructor of the dashboard component and passed on to the chart components. The dashboard component will look as following:
+ 
+\begin{lstlisting}[language=JavaScript] 	
+ 	@Component({
+ 		selector: 'app-dashboard',
+ 		templateUrl: './dashboard.component.html',
+ 		styleUrls: ['./dashboard.component.css']
+ 	})
+ 	export class DashboardComponent implements OnInit {
+ 		chartSettings: ChartSetting[] = [];
+ 		
+ 		constructor(private _chartSettingsService: ChartSettingsService) { }
+ 		
+ 		ngOnInit() {
+ 			this.chartSettings = this._chartSettingsService.chartSettings;
+ 		}
+ 	
+	 	// This is a trick to expose the enum to the view so no magic numbers are needed
+	 	get chartTypes(): typeof ChartType {
+	 		return ChartType;
+	 	}	
+ 	}
+\end{lstlisting}
+
+The HTML template will loop over the settings, check the type and render the right component for each type.
+
+ 
+\begin{lstlisting}[language=JavaScript] 	
+	<div *ngFor='let setting of chartSettings'>
+		<div *ngIf='setting.type === chartTypes.Line'>
+			<app-line-chart [chartSettings]='setting'></app-line-chart>
+		</div>
+		<div *ngIf='setting.type === chartTypes.Bar'>
+			<app-bar-chart [chartSettings]='setting'></app-bar-chart>
+		</div>
+		<div *ngIf='setting.type === chartTypes.Scatter'>
+			<app-scatter-chart [chartSettings]='setting'></app-scatter-chart>
+		</div>
+		<div *ngIf='setting.type === chartTypes.Pie'>
+			<app-pie-chart [chartSettings]='setting'></app-pie-chart>
+		</div>
+	</div>
+	
+\end{lstlisting}
+
+If the app is served, still nothing shows up in the browser. This is because Angular bootstraps the app component but the new dashboard component is not imported yet. If the dashboard module is imported in the browser, some text is displayed which state that the chart components work.
+
+
+
+
+
+
+
 
