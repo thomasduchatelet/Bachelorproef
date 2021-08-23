@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "oFw9Z8ifOtslVEL4F49oD4gJ5gPfaanrbdV+BUGJIgB8bq0B3FvO6ywXIwMCrmu93drw+Uc3ls7JAED7NNexNg==",
+  "success": true,
+  "projectFilePath": "S:\\bap\\Bachelorproef\\applications\\realtime api\\RealtimeApi\\RealtimeApi\\RealtimeApi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Thomas Duchatelet\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\Thomas Duchatelet\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\Thomas Duchatelet\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
+    "C:\\Users\\Thomas Duchatelet\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
+    "C:\\Users\\Thomas Duchatelet\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
+    "C:\\Users\\Thomas Duchatelet\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512"
+  ],
+  "logs": []
+}

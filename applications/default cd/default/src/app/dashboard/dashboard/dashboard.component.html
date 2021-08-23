@@ -1,14 +1,3 @@
 <div *ngFor='let setting of chartSettings'>
-    <div *ngIf='setting.type === chartTypes.Line'>
-        <app-line-chart [chartSettings]='setting'></app-line-chart>
-    </div>
-    <div *ngIf='setting.type === chartTypes.Bar'>
-        <app-bar-chart [chartSettings]='setting'></app-bar-chart>
-    </div>
-    <div *ngIf='setting.type === chartTypes.Scatter'>
-        <app-scatter-chart [chartSettings]='setting'></app-scatter-chart>
-    </div>
-    <div *ngIf='setting.type === chartTypes.Pie'>
-        <app-pie-chart [chartSettings]='setting'></app-pie-chart>
-    </div>
+        <app-base-chart [chartSettings]='setting'></app-base-chart>
 </div>

@@ -1,10 +1,10 @@
 <div class="chart-wrapper">
-    <canvas baseChart 
-        [datasets]="dataSet" 
-        [labels]="labels" 
+    <canvas baseChart
+        [datasets]="data.timeSeriesData"
+        [labels]="data.timeLabels"
         [options]="options"
-        [legend]="legend" 
-        [chartType]="type" 
+        [legend]="legend"
+        [chartType]="type"
         [plugins]="plugins">
     </canvas>
 </div>

@@ -4,3 +4,10 @@ export enum ChartType {
     Scatter = 2,
     Pie = 3
 }
+
+export enum ListenerType {
+    Temperature,
+    Pressure,
+    Humidity,
+    Wind
+}
