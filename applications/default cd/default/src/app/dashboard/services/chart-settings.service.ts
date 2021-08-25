@@ -17,7 +17,7 @@ export class ChartSettingsService {
     let chartProperties = {
       labels: [],
       options: {responsive: true, animation: {
-        duration: 1
+        duration: 0
     }} as ChartOptions,
       plugins: [],
       legend: true
@@ -27,7 +27,7 @@ export class ChartSettingsService {
       {properties: chartProperties = {
       labels: [],
       options: {responsive: true, animation: {
-        duration: 1
+        duration: 0
     }} as ChartOptions,
       plugins: [],
       legend: true
@@ -35,7 +35,7 @@ export class ChartSettingsService {
       {properties: chartProperties = {
       labels: [],
       options: {responsive: true, animation: {
-        duration: 1
+        duration: 0
     }} as ChartOptions,
       plugins: [],
       legend: true
@@ -43,7 +43,7 @@ export class ChartSettingsService {
       {properties: chartProperties = {
       labels: [],
       options: {responsive: true, animation: {
-        duration: 1
+        duration: 0
     }} as ChartOptions,
       plugins: [],
       legend: true
@@ -51,7 +51,7 @@ export class ChartSettingsService {
       {properties: chartProperties = {
       labels: [],
       options: {responsive: true, animation: {
-        duration: 1
+        duration: 0
     }} as ChartOptions,
       plugins: [],
       legend: true
@@ -59,7 +59,7 @@ export class ChartSettingsService {
       {properties: chartProperties = {
       labels: [],
       options: {responsive: true, animation: {
-        duration: 1
+        duration: 0
     }} as ChartOptions,
       plugins: [],
       legend: true
@@ -67,7 +67,7 @@ export class ChartSettingsService {
       {properties: chartProperties = {
       labels: [],
       options: {responsive: true, animation: {
-        duration: 1
+        duration: 0
     }} as ChartOptions,
       plugins: [],
       legend: true
@@ -75,7 +75,7 @@ export class ChartSettingsService {
       {properties: chartProperties = {
       labels: [],
       options: {responsive: true, animation: {
-        duration: 1
+        duration: 0
     }} as ChartOptions,
       plugins: [],
       legend: true
@@ -83,7 +83,7 @@ export class ChartSettingsService {
       {properties: chartProperties = {
       labels: [],
       options: {responsive: true, animation: {
-        duration: 1
+        duration: 0
     }} as ChartOptions,
       plugins: [],
       legend: true

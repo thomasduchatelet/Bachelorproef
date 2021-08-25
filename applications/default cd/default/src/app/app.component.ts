@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ɵdetectChanges } from '@angular/core';
+import { timer } from 'rxjs';
 
 
 @Component({
@@ -7,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'default';
+  constructor(){
+  }
 }

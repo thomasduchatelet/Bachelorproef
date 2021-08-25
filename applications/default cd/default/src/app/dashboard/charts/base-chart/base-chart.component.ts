@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnInit, ɵmarkDirty } from '@angular/core';
 import { Chart, ChartOptions, ChartPluginsOptions, plugins } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { ChartSetting } from '../../models/chart-setting';
@@ -6,6 +6,7 @@ import { ChartData, ChartDataSet, ChartModel } from '../../models/chart-models';
 import { ChartType, ListenerType } from '../../models/chart-type.enum';
 import { formatDate } from '@angular/common';
 import * as signalR from '@aspnet/signalr';
+import { ReplaySubject, timer } from 'rxjs';
 
 @Component({
   selector: 'app-base-chart',
@@ -22,30 +23,32 @@ import * as signalR from '@aspnet/signalr';
     </div>`
 })
 export class BaseChartComponent implements OnInit {
-  @Input() chartSettings: ChartSetting;
-  private _hubConnection: signalR.HubConnection;
+  @Input() chartSettings: ChartSetting = new ChartSetting();
+  @Input() listen: ReplaySubject<boolean> = new ReplaySubject();
+  private _hubConnection: signalR.HubConnection | undefined;
   public data: ChartData = new ChartData();
 
   ngOnInit(): void {
-
+    this.listen.subscribe(l => l? this.startHubConnection() : this.stopHubConnection())
     this.buildHubConnection();
     this.startHubConnection();
     this.addChartDataListener();
   }
 
-  public getData(){
-    switch (this.chartSettings.type) {
+
+  public getData() : ChartDataSet[]{
+    switch (this.chartSettings?.type) {
       case ChartType.Bar:
         return this.data.averageData;
       case ChartType.Line:
         return this.data.timeSeriesData;
       default:
-        return new ChartDataSet();
+        return [];
     }
   }
 
   public getLabels(){
-    switch (this.chartSettings.type) {
+    switch (this.chartSettings?.type) {
       case ChartType.Bar:
         return this.labels;
       case ChartType.Line:
@@ -56,7 +59,7 @@ export class BaseChartComponent implements OnInit {
   }
 
   private addChartDataListener(){
-    switch (this.chartSettings.listenerType) {
+    switch (this.chartSettings?.listenerType) {
       case ListenerType.Temperature:
         this.addListener('tempData');
         break;
@@ -76,11 +79,11 @@ export class BaseChartComponent implements OnInit {
   }
 
   private addListener(subject: string) {
-    this._hubConnection.on(subject, (response: ChartModel[]) =>
+    this._hubConnection?.on(subject, (response: ChartModel[]) =>
     {
       response.forEach(data =>
         {
-          let index = this.data.timeSeriesData.indexOf(this.data.timeSeriesData.find(barData => barData.label === data.label))
+          let index = this.data.timeSeriesData.indexOf(this.data.timeSeriesData.find(barData => barData.label === data.label) as ChartDataSet)
           let time = formatDate(data.timeStamp, 'HH:mm:ss:SSS', 'en-us');
           if(this.data.timeLabels.indexOf(time) == -1) this.data.timeLabels.push(time);
           if(index > -1){
@@ -92,14 +95,14 @@ export class BaseChartComponent implements OnInit {
               label: data.label
             });
           }
-          if(this.data.timeSeriesData[index].data.length > 30){
+          if(this.data.timeSeriesData[index].data.length > 20){
             this.data.timeSeriesData[index].data = this.data.timeSeriesData[index].data.slice(1);
           }
-          if(this.data.timeLabels.length > 30){
+          if(this.data.timeLabels.length > 20){
             this.data.timeLabels.shift()
           }
         });
-    });
+      });
   }
 
   private buildHubConnection(){
@@ -109,9 +112,15 @@ export class BaseChartComponent implements OnInit {
   }
 
   private startHubConnection(){
-    this._hubConnection.start()
-    .then(() => console.log('Connection started'))
-    .catch(err => console.log('Error while starting connection: ' + err));
+      this._hubConnection?.start()
+      .then(() => console.log('Connection started'))
+      .catch(err => console.log('Error while starting connection: ' + err));
+  }
+
+  stopHubConnection(): void {
+      this._hubConnection?.stop()
+      .then(() => console.log('Connection stopped'))
+      .catch(err => console.log('Error while stopping connection: ' + err));
   }
 
 
@@ -131,9 +140,10 @@ export class BaseChartComponent implements OnInit {
     return this.chartSettings.properties.legend;
   }
 
-  get type():  string{
-    return this.chartSettings.typeString;
+  get type():  Chart.ChartType{
+    return this.chartSettings.typeString as Chart.ChartType;
   }
 
 }
+
 

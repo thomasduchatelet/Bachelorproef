@@ -1,3 +1,10 @@
+
+<button (click)="addRow()">Add Row</button>
+<button (click)="removeListeners()">Stop</button>
+<button (click)="addListeners()">Start</button>
+<h3>Total cycles: {{cycles}}</h3>
+<h3>Cycles / second: {{cyclesPerSecond}}</h3>
+<h3>Latency: {{latency}} ms</h3>
 <div *ngFor='let setting of chartSettings'>
-        <app-base-chart [chartSettings]='setting'></app-base-chart>
+        <app-base-chart [chartSettings]='setting' [listen]="listen"></app-base-chart>
 </div>
